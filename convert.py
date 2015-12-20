@@ -9,8 +9,12 @@ def format_filename(s):
     return filename
 
 class RecordingInfo:
+
     def __init__(self, recording):
         self.recording = recording
+        self.__readInfo()
+
+    def __readInfo(self):
         with open(os.path.join(recording, "info")) as infoFile:
             for line in infoFile:
                 infoType = line[:1]
@@ -19,6 +23,7 @@ class RecordingInfo:
                     self.title = content
                 elif (infoType == 'D'):
                     self.description = content
+    
     def filename(self):
         return format_filename(self.title)
 
