@@ -15,7 +15,7 @@ class RecordingInfo:
         self.__readInfo()
 
     def __readInfo(self):
-        with open(os.path.join(recording, "info")) as infoFile:
+        with open(os.path.join(self.recording, "info")) as infoFile:
             for line in infoFile:
                 infoType = line[:1]
                 content = line[2:].strip()
@@ -26,15 +26,22 @@ class RecordingInfo:
     
     def filename(self):
         return format_filename(self.title)
+        
+    def __repr__(self):
+        return self.filename()
+        
+def read_recordings(parent, folder):
+    recordings = []
+    if (folder == None):
+        recording = parent
+    else :
+        recording = os.path.join(parent, folder)
+    if (recording[-3:] == "rec"):
+        recordings.append(RecordingInfo(recording))
+    else :
+        for subfolder in os.listdir(recording):
+            recordings.extend(read_recordings(recording, subfolder))
+    return recordings
 
 print "converting VDR recordings from directory " + config.recordings
-for rec in os.listdir(config.recordings):
-    if (rec.startswith("%") or not config.convertCut):
-        for folder in os.listdir(os.path.join(config.recordings, rec)):
-            recording = os.path.join(config.recordings, rec, folder)
-            info = RecordingInfo(recording)
-            print(info.recording)
-            print(info.title)
-            print(info.description)
-            print(info.filename())
-            
+print(read_recordings(config.recordings, None))
