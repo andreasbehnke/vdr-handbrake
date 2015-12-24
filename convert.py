@@ -38,7 +38,7 @@ def read_recordings(parent, folder):
         recording = os.path.join(parent, folder)
     if (recording[-3:] == "rec"):
         recordings.append(RecordingInfo(recording))
-    else :
+    elif (os.path.isdir(recording)) :
         for subfolder in os.listdir(recording):
             recordings.extend(read_recordings(recording, subfolder))
     return recordings
