@@ -12,6 +12,8 @@ class RecordingInfo:
 
     def __init__(self, recording):
         self.recording = recording
+        self.title = ""
+        self.description = ""
         self.__readInfo()
 
     def __readInfo(self):
